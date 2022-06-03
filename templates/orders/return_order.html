@@ -1,0 +1,217 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Client - Place order
+{% endblock %}
+
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+     <!-- main body -->
+     <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+        
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Return order</h3>
+                        <p class="text-subtitle text-muted">For user to check they list</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            
+            <section class="section">
+                <div class="row" id="basic-table">
+                    <div class="col-12 col-md-9">
+    
+                        <!-- Billing Tables address start  -->
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    {% if not user.branch %}
+                                    <h4 class="card-title">Billing & Return Address</h4>
+                                    {% else %}
+                                    <h4 class="card-title">Billing Address</h4>
+                                    {% endif %}
+                                    <!-- Table with outer spacing -->
+                                    <ul class="list-group list-group-flush">
+                                        {% if not user.branch %}
+                                        <li class="list-group-item">{{ user.first_name }} {{ user.last_name }}</li>
+                                        {% endif %}
+                                        <li class="list-group-item">{{ user.company }}</li>
+                                        <li class="list-group-item">{{ company_location.address }}</li>
+                                        <li class="list-group-item">{{ company_location.city }} {{ company_location.country }}</li>
+                                        <li class="list-group-item">{{ company_location.postcode }}</li>
+                                        <li class="list-group-item">{{ company_location.phone }}</li>
+                                    </ul>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Billing Tables address end -->
+
+                        <!-- Shipping address Tables start  -->
+                        {% if user.branch %}
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <h4 class="card-title">Return Address</h4>
+                                    <!-- Table with outer spacing -->
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">{{ user.first_name }} {{ user.last_name }}</li>
+                                        <li class="list-group-item">{{ user.branch }}</li>
+                                        <li class="list-group-item">{{ user.branch.location.address }}</li>
+                                        <li class="list-group-item">{{ user.branch.location.city }} {{ user.branch.location.country }}</li>
+                                        <li class="list-group-item">{{ user.branch.location.postcode }}</li>
+                                        <li class="list-group-item">{{ user.branch.location.phone }}</li>
+                                    </ul>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <!-- Shipping address Tables end -->
+
+                        <!-- Review Cart Tables start -->
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <h4 class="card-title">Review Products</h4>
+                                    <!-- Table with outer spacing -->
+                                    <div class="table-responsive">
+                                        <table class="table table-lg">
+                                            <thead>
+                                                <tr>
+                                                    <th>PRODUCT</th>
+                                                    <th>CATEGORY</th>
+                                                    <th>Return Charge</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% if return_product.crate %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="card-content">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="avatar avatar-xl">
+                                                                        <img src="{% static 'assets/images/samples/crate_02.jpg' %}" alt="Face 1">
+                                                                    </div>
+                                                                    <div class="ms-3 name">
+                                                                        <h5 class="font-bold">{{ return_product.crate.crate_name }}</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <h6 class="text-muted mb-0">{{ return_product.crate.category }}</h6>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <h6>
+                                                                ${{ return_product.crate.return_price }}
+                                                            </h6>
+                                                            
+                                                        </td>
+                                                        
+                                                    </tr>
+                                                {% else %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="card-content">
+                                                                <div class="d-flex align-items-center">
+                                                                   
+                                                                    <div class="ms-3 name">
+                                                                        <h5 class="font-bold">{{ return_product.item.item_name }}</h5>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <h6 class="text-muted mb-0">{{ return_product.item.category }}</h6>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <h6>
+                                                                ${{ return_product.item.return_price }}
+                                                            </h6>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Review Cart Tables end -->
+
+                    </div>
+
+                    <!-- payment section -->
+                    <div class="col-12 col-md-3">
+                    <form class="text-center" action="{% url 'initiat_return' %}" method="get">
+
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <span>Total Price:</span>
+                                        <span>${{total | floatformat:2}}</span>
+                                    
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Tax:</span>
+                                        <span>${{tax | floatformat:2}}</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Total:</span>
+                                        <span id="grand_total">${{grand_total | floatformat:2}}</span>
+                                    </div>
+                                    <hr id="monthly_charge_grop_box">
+                                    <div id="monthly_charge_grop_box" class="d-flex justify-content-between">
+                                        <span>Pickup date:</span>
+                                        <span id="monthly_charge">{{ return_product.pickup_date }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-center">
+                                       
+                                        <input hidden type="text" name="return_number" value="{{return_product.return_number}}">
+                                       
+                                        <img src="{% static 'assets/images/samples/payments.png' %}" alt="payment card" height="26">    
+                                    </div>
+                                    <input class="btn btn-block btn-xl btn-danger font-bold mt-3" type="submit" value="Return Order"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- payment section end -->
+                    
+                    
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}

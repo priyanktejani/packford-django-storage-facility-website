@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Cart
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <!-- main body -->
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Cart</h3>
+                        <p class="text-subtitle text-muted">Shopping Basket</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Table</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            {% if cart_items %}
+            <!-- cart Tables start -->
+                <section class="section">
+                    <div class="row" id="basic-table">
+                        <div class="col-12 col-md-9">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <!-- Table with outer spacing -->
+                                        <div class="table-responsive">
+                                            <table class="table table-lg">
+                                                <thead>
+                                                    <tr>
+                                                        <th>PRODUCT</th>
+                                                        <th>QUANTITY</th>
+                                                        <th>RATE</th>
+                                                    </tr>
+                                                </thead>
+                                                {% for cart_item in cart_items %}
+                                                <tbody>
+                                                    {% if cart_item.crate %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="card-content">
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="avatar avatar-xl">
+                                                                        <img src="{% static 'assets/images/samples/crate_02.jpg' %}" alt="cart_crate">
+                                                                    </div>
+                                                                    <div class="ms-3 name">
+                                                                        <h5 class="font-bold">{{ cart_item.crate.crate_name }}</h5>
+                                                                        <h6 class="text-muted mb-0">{{ cart_item.crate.category }}</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" value="{{ cart_item.quantity }}" min="0" max="500"/>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <h6>
+                                                                ${{ cart_item.crate_sub_total }}
+                                                            </h6>
+                                                            <small>${{ cart_item.crate.delivery_price }} each</small>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <a href="{% url 'delete_cart_crate' cart_item.crate.id %}" class="btn btn-danger">X</a>
+                                                        </td>
+                                                    </tr>
+                                                    {% else %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="card-content">
+                                                                <div class="d-flex align-items-center">
+                                                                    
+                                                                    <div class="ms-3 name">
+                                                                        <h5 class="font-bold">{{ cart_item.item.item_name }}</h5>
+                                                                        <h6 class="text-muted mb-0">{{ cart_item.item.category }}</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" value="{{ cart_item.quantity }}" min="0" max="500"/>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <h6>
+                                                                ${{ cart_item.item_sub_total }}
+                                                            </h6>
+                                                            <small>${{ cart_item.item.delivery_price }} each</small>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <a href="{% url 'delete_cart_item' cart_item.item.id %}" class="btn btn-danger">X</a>
+                                                        </td>
+                                                    </tr>
+                                                    {% endif %}
+                                                </tbody>
+                                                {% endfor %}
+                                                
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12 col-md-3">
+                            <div class="card">
+                                
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <span>Total Price:</span>
+                                            <span>${{total | floatformat:2}}</span>
+                                        
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Tax:</span>
+                                            <span>${{tax | floatformat:2}}</span>
+                                        
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span>Total:</span>
+                                            <span>${{grand_total | floatformat:2}}</span>
+                                            
+                                        </div>
+                                        <hr>
+                                        <div class="d-flex justify-content-center">
+                                            <img src="{% static 'assets/images/samples/payments.png' %}" alt="payment card" height="26">
+                                        </div>
+                                            <a href="{% url 'place_order' %}" class="btn btn-block btn-xl btn-primary font-bold mt-3">Checkout</a>
+                                            <button class="btn btn-block btn-outline-secondary font-bold mt-3">Continue Shopping</button>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </section>
+            <!-- cart Tables end -->
+            {% else %}
+                <!-- print massage if cart is empty  -->
+                <section class="section">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title text-center">Your Shopping Cart is Empty</h4>
+                                </div>
+                                <div class="card-body text-center">
+                                    <button class="btn btn-primary font-bold mt-3">Continue Shopping</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+            </div>
+    </div>
+
+{% endblock %}

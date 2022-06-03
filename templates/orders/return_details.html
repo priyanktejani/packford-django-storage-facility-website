@@ -1,0 +1,146 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Order_details
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Return details</h3>
+                        <p class="text-subtitle text-muted">View Return Details</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="section">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-between mb-4">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"> <span class="fw-bold">Return # {{ return_products.return_number }}</span> </li>
+                                        <li class="list-group-item"><span class="fw-bold">Return Date:</span> {{return_products.created_at}} </li>
+                                        <li class="list-group-item"><span class="fw-bold">Payment Method:</span> Card </li>
+                                        <li class="list-group-item"><span class="fw-bold">Status:</span> At Client </li>
+                                    </ul>
+        
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item fw-bold">Invoiced To</li>
+                                        <li class="list-group-item">{{ company }}</li>
+                                        <li class="list-group-item">{{ location.address }}</li>
+                                        <li class="list-group-item">{{ location.city }}, {{ location.country }}</li>
+                                        <li class="list-group-item">{{ location.phone }}</li>
+        
+                                    </ul>
+                                </div>
+                                <!-- Table with outer spacing -->
+                                <div class="table-responsive">
+                                            <table class="table table-lg">
+                                                <thead>
+                                                    <tr>
+                                                        <th>PRODUCT</th>
+                                                        <th>CATEGOTY</th>
+                                                        <th>RETURN CHARGE</th>
+                                                        <th>STATUS</th>
+                                                    </tr>
+                                                </thead>
+
+                                              
+                                                <tbody>
+
+                                                    {% if return_products.crate %}
+                                                        <tr>
+                                                            <td>
+                                                                <div class="card-content">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="avatar avatar-xl">
+                                                                            <img src="{% static 'assets/images/samples/crate_02.jpg' %}" alt="Face 1">
+                                                                        </div>
+                                                                        <div class="ms-3 name">
+                                                                            <a href="{{ return_products.crate.get_url }}">
+                                                                                <h5 class="font-bold">{{ return_products.crate.crate_name }}</h5>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <h6 class="font-bold">{{ return_products.crate.category }}</h6>
+                                                            </td>
+                                                            <td class="text-bold-500">
+                                                                <h6>${{ return_products.crate.return_price }}</h6>
+                                                            </td>
+                                                            <td class="text-bold-500">
+                                                                <small>{{ return_products.crate.status }}</small>
+                                                            </td>
+                                                        </tr>
+                                                    {% else %}
+                                                    <tr>
+                                                        <td>
+                                                            <div class="card-content">
+                                                                <div class="d-flex align-items-center">
+                                                                    
+                                                                    <div class="ms-3 name">
+                                                                        <a href="{{ return_products.item.get_url }}">
+                                                                            <h5 class="font-bold">{{ return_products.item.item_name }}</h5>
+                                                                        </a>
+                                                                        <h6 class="text-muted mb-0">{{ return_products.item.category }}</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <h6 class="font-bold">{{ return_products.item.category }}</h6>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <h6>${{ return_products.item.return_price }}</h6>
+                                                        </td>
+                                                        <td class="text-bold-500">
+                                                            <small>{{ return_products.item.status }}</small>
+                                                        </td>
+                                                    </tr>
+                                                    {% endif %}
+                                                </tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><li class="list-group-item "> <span class="fw-bold">Tax</span></li></td>
+                                                    <td><li class="list-group-item "> <span class="fw-bold">{{ return_products.tax }}</span></li></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><li class="list-group-item "> <span class="fw-bold">Final Amount:</span></li></td>
+                                                    <td><li class="list-group-item "> <span class="fw-bold">{{ return_products.return_total }}</span></li></td>
+                                                </tr>
+                                                </tr>
+                                                
+                                            </table>
+                                   
+                                
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}

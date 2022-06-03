@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="mt-5">
+        <section id="content-types">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <h4 class="card-title">Dashboard</h4>
+                            </div>
+                            
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <a href="{% url 'client_dashboard' %}" class="btn btn-light-primary">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+{% endblock %}

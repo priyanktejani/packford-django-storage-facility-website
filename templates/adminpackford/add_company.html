@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Dashboard
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+    
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Add Client</h3>
+                        <p class="text-subtitle text-muted">Add Company name, location Details</p>
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+                <div class="card col-6">
+                    <div class="card-body">
+                        <div class="row">
+                            <form action="{% url 'dasboard_packford' %}" method="post">
+                                {% csrf_token %}
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="basicInput">Client Company Name</label>
+                                        <input type="text" class="form-control" name="company_name" id="basicInput"
+                                            placeholder="Company Name" maxlength="30" required>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="helpInputTop">Postcode</label>
+                                        <input type="text" name="postcode" class="form-control"
+                                        placeholder="Postcode" maxlength="8" required>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="helperText">Address</label>
+                                        <input type="text" name="address" class="form-control" 
+                                        placeholder="Address" maxlength="50" required>
+                                        </p>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="helperText">City:</label>
+                                        <select class="form-select" id="inputGroupSelect01" name="city" required>
+                                            <option value="London" selected="">London</option>
+                                            <option value="Sheffield">Sheffield</option>
+                                            <option value="Liverpool">Liverpool</option>
+                                            <option value="Hertfordshire">Hertfordshire</option>
+                                            <option value="Birmingham">Birmingham</option>
+                                            <option value="Wales">Wales</option>
+                                            <option value="Kent">Kent</option>
+                                            <option value="Leicester">Leicester</option>
+                                            <option value="Coventry">Coventry</option>
+                                        </select>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="helperText">Country:</label>
+                                        <input type="text" name="country" class="form-control" placeholder="Country" maxlength="20" required>
+                                        </p>
+                                    </div>
+    
+                                    <div class="form-group">
+                                        <label for="helperText">Phone:</label>
+                                        <input type="tel" name="phone" id="helperText" class="form-control" 
+                                        placeholder="Phone" maxlength="10" required>
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="col-12 d-flex justify-content-end">
+                                       
+                                        <input type="submit" class="btn btn-primary me-1 mb-1" value="Submit">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+       
+    </div>
+
+{% endblock %}

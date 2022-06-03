@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Dashboard
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <!-- main body -->
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Dashboard</h3>
+                        <p class="text-subtitle text-muted">Manage your Product's</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic card section start -->
+            <section id="content-types">
+                <div class="row">
+
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon purple">
+                                                    <i class="bi bi-border-width"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Total Orders</h6>
+                                                <h6 class="font-extrabold mb-0">{{ total_orders }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon blue">
+                                                    <i class="bi bi-bootstrap-reboot"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Total Returns</h6>
+                                                <h6 class="font-extrabold mb-0">{{ total_returns }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon red">
+                                                    <i class="bi bi-box-arrow-left"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <a href="{% url 'logout' %}">
+                                                    <h6 class="font-extrabold mb-0">LOGOUT</h6>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-body py-4 px-5">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-xl">
+                                        <img src="{% static 'assets/images/faces/2.jpg' %}" alt="Face 1">
+                                    </div>
+                                    <div class="ms-3 name">
+                                        <h5 class="font-bold">{{ user.username }}</h5>
+                                        <h6 class="text-muted mb-0">{{ company }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+               
+                <h5 class="mb-4">Manage your crates</h5>
+                           
+
+                <!-- Client carts section start -->
+                <section id="content-types">
+                    <div class="row">
+                        {% for crate in crates %}
+                        <div class="col-xl-4 col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <h4 class="card-title">{{crate.crate_name}}</h4>
+                                        <p class="card-text">
+                                            {% if crate.status == 'Pick up room' %}
+                                                Status : Ready to dispatch
+                                            {% else %}
+                                                Status : {{ crate.status }}
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between">
+                                        <span>{{crate.category}}</span>
+                                        <a href="{{ crate.get_url }}">
+                                            <button class="btn btn-light-primary">View & Order</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                <!-- Client carts types section end -->
+
+            </section>
+            <!-- Basic Card types section end -->
+           
+        </div>
+    </div>
+
+{% endblock %}

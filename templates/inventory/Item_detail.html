@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Dashboard
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>{{item.item_name}}</h3>
+                        <p class="text-subtitle text-muted">Category: {{item.category}}</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Button</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <section class="section">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Storage location: {{item.crate.crate_name}}</li>
+                                    <li class="list-group-item">Storage date: {{item.created_date}}</li>
+                                    <li class="list-group-item">Updated at: {{item.modified_date}}</li>
+                                </ul>
+                                <hr>
+
+
+                                {% if request.user.is_client %}
+                                    {% if not crate.status == "Delivered" %}
+                                        {% if not item.status == 'Delivered' %}
+                                            {% if not item.status == 'Added' %}
+                                                <div class="col-5">
+                                                    <form action="{{ item.get_url }}" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="d-flex justify-content-start ms-2">
+                                                            <span>Change file location</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-center mt-2 ms-2">
+                                                            <select class="form-select" id="inputGroupSelect01" name="item_location">
+                                                                <option value="None" selected="">Keep Same</option>
+                                                                {% for crate in crates %}
+                                                                    <option value="{{crate}}">{{crate}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <input type="submit" name="change_item_crate" class="btn btn-primary ms-2" value="Request Change">
+
+                                                        </div>
+                                                        
+                                                    </form>
+                                                </div>
+                                                <hr>
+                                            {% endif %} 
+                                        {% endif %}
+                                    {% endif %}
+                                    <div>
+                                    {% if item.status == 'Shelf' %}
+                                        {% if item_in_cart %}
+                                            <div>
+                                                <a href="{% url 'cart' %}">
+                                                    <button class="btn btn-success btn-lg">Added to cart</button>
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <a href="{% url 'add_item_cart' item.id %}">
+                                                <button class="btn btn-outline-primary btn-lg">Add to cart</button>
+                                            </a>
+                                        {% endif %}
+                                        
+                                    {% elif item.status == 'Delivered' or item.status == 'Added'%}
+                                        <a href="{% url 'return_item' item.id %}">
+                                            <button class="btn btn-outline-danger btn-lg">Return for storage</button>
+                                        </a>
+                                    {% elif item.status == 'Ordered'%}
+                                        <a href="#">
+                                            <button disabled class="btn btn-secondary btn-lg">Ordered</button>
+                                        </a>
+                                    {% elif item.status == 'Pick up room'%}
+                                        <a href="#">
+                                            <button disabled class="btn btn-secondary btn-lg">Ready to dispatch</button>
+                                        </a>
+                                    {% elif item.status == 'Return initiated'%}
+                                        <a href="#">
+                                            <button disabled class="btn btn-secondary btn-lg">Return initiated</button>
+                                        </a>
+                                    {% else %}
+                                        <a href="#">
+                                            <button disabled class="btn btn-secondary btn-lg">Order is on the way</button>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+
+                                    <div class="col-4">
+                                        <!-- change order status -->
+                                        {% if request.user.is_manager or request.user.is_delivery_person %}
+                                            <form action="{{ item.get_url }}" method="post">
+                                                {% csrf_token %}
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label for="basicInput">Change Order Status</label>
+                                                        <div class="d-flex justify-content-center mt-1">
+                                                            <select class="form-select" id="inputGroupSelect01" name="item_status_list">
+                                                                <option value="{{item.status}}" selected="">{{item.status}}</option>
+                                                                <option value="Shelf">Shelf</option>
+                                                                <option value="Ordered">Ordered</option>
+                                                                <option value="Pick up room">Pick up room</option>
+                                                                <option value="In transit">In transit</option>
+                                                                <option value="Delivered">Delivered</option>
+                                                                <option value="Return initiated">Return initiated</option>
+                                                            </select>
+                                                            <input type="submit" name="change_status" class="btn btn-primary ms-2" value="Submit">
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <hr>
+
+                                            {% if request.user.is_manager and item.change_crate %}
+                                            <!-- check if change location -->
+                                                <form action="{{ item.get_url }}" method="post">
+                                                    {% csrf_token %}
+                                                    <div>
+                                                        <label for="basicInput">Item Location Change Requested</label>
+                                                        <div class="d-flex justify-content-between mt-1">
+                                                            <select class="form-select" id="inputGroupSelect01" name="item_change_location" >
+                                                                <option value="{{item.change_crate}}" selected="">{{item.change_crate}}</option>
+                                                            </select>
+                                                            <input type="submit" name="approve_change" class="btn btn-primary ms-2" value="Approve">
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+                
+            </section>
+        </div>
+
+      
+    </div>
+
+
+{% endblock %}

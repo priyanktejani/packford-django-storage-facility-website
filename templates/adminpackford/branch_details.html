@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Dashboard
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <!-- main body -->
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>{{branch.branch_name}}</h3>
+                        <p class="text-subtitle text-muted">Manage your Product's</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic card section start -->
+            <section id="content-types">
+               
+                <section class="section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Location</h4>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Address: {{branch.location.address}}</li>
+                                <li class="list-group-item">Postcode: {{branch.location.postcode}}</li>
+                                <li class="list-group-item">City: {{branch.location.city}}</li>
+                                <li class="list-group-item">Country: {{branch.location.country}}</li>
+                                <li class="list-group-item">Phone: {{branch.location.phone}}</li>
+                            </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Basic Tables start -->
+                <section class="section">
+                    <div class="row" id="basic-table">
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="card-title">Branch Employees</h4>
+                                        {% if request.user.is_salesman %}
+                                            <a href="{% url 'add_branch_employee' company.id branch.id%}" class="btn btn-primary ">Add Employee</a>
+                                        {% endif %}
+                                        </div>
+                                </div>
+                                <div class="card-content">
+                                        <!-- Table with outer spacing -->
+                                        <div class="table-responsive">
+                                            <table class="table table-lg">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for employee in employees %}
+                                                    <tr>
+                                                        {% if employee.first_name %}
+                                                            <td class="text-bold-500">{{ employee.first_name }} {{ employee.last_name }}</td>
+                                                        {% else %}
+                                                            <td class="text-bold-500">{{ employee.username }}</td>
+                                                        {% endif %}
+                                                        <td>{{employee.email}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+
+                    </div>
+                </section>
+                <!-- Basic Tables end -->
+
+            </section>
+          
+        </div>
+    </div>
+{% endblock %}

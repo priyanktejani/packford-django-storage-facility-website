@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    Client - Order Complete
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Order Complete</h3>
+                        <p class="text-subtitle text-muted">Your order will be dispatched soon</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Layout Default</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <section class="section">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-center">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    
+                                </div>
+                                <i class="fa-solid fa-circle-check"></i>
+                                <h4 class="card-title text-center">Your order successfully placed - Packford </h4>
+                            </div>
+                            <div class="card-body text-center">
+                                <a href="{% url 'client_dashboard' %}" class="btn btn-primary font-bold mt-3">Dashboard </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+            <section class="section">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Packford</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-4">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> <span class="fw-bold">Order # {{ order_number }}</span> </li>
+                                <li class="list-group-item"><span class="fw-bold">Order Date:</span> {{order.created_at}} </li>
+                                <li class="list-group-item"><span class="fw-bold">Payment Method:</span> card </li>
+                                <li class="list-group-item"><span class="fw-bold">Status:</span> {{ order.status }}</li>
+                            </ul>
+
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item fw-bold">Invoiced To</li>
+                                <li class="list-group-item">{{ company }}</li>
+                                <li class="list-group-item">{{ location.address }}</li>
+                                <li class="list-group-item">{{ location.city }}, {{ location.country }}</li>
+                                <li class="list-group-item">{{ location.phone }}</li>
+
+                            </ul>
+                        </div>
+                        <hr>
+                        
+                        <table class="table table-striped" id="table1">
+                            <thead>
+                                <tr>
+                                    <th>Product description</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in ordered_products %}
+                                {% if product.crate %}
+                                    <tr>
+                                        <td>{{ product.crate.crate_name }}</td>
+                                        <td>{{ product.quantity }}</td>
+                                        <td>{{ product.product_price }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td>{{ product.item.item_name }}</td>
+                                        <td>{{ product.quantity }}</td>
+                                        <td>{{ product.product_price }}</td>
+                                    </tr>
+                                {% endif %}
+                                {% endfor%}
+                                <tr>
+                                    <td></td>
+                                    <td><li class="list-group-item "> <span class="fw-bold">Sub Total</span></li></td>
+                                    <td><li class="list-group-item "> <span class="fw-bold">{{ subtotal | floatformat:2 }}</span></li></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><li class="list-group-item "> <span class="fw-bold">Tax</span></li></td>
+                                    <td><li class="list-group-item "> <span class="fw-bold">{{ order.tax | floatformat:2 }}</span></li></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><li class="list-group-item "> <span class="fw-bold">Final Amount:</span></li></td>
+                                    <td><li class="list-group-item "> <span class="fw-bold">{{ order.order_total | floatformat:2}}</span></li></td>
+                                </tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                       
+                    </div>
+
+             
+                </div>
+
+            </section>
+        </div>
+
+    </div>
+    
+
+{% endblock %}

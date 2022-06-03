@@ -1,0 +1,132 @@
+{% load static %}
+ 
+ <div id="sidebar" class="active">
+    <div class="sidebar-wrapper active">
+    <div class="sidebar-header">
+        <div class="d-flex justify-content-between">
+            <div class="logo">
+                <a href="{% url 'client_dashboard' %}"><img src="{% static 'assets/images/logo/logo.png' %}" alt="Packford" srcset="" style="width:140px;height:27px;" ></a>
+            </div>
+            <div class="toggler">
+                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-menu">
+        <ul class="menu">
+            <li class="sidebar-title">Menu</li>
+
+            {% if request.user.is_client %}
+            <li
+                class="sidebar-item active ">
+                <a href="{% url 'client_dashboard' %}" class='sidebar-link'>
+                    <i class="bi bi-grid-fill"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li
+                class="sidebar-item">
+                <a href="{% url 'order_crate' %}" class='sidebar-link'>
+                    <i class="bi bi-plus-square-fill"></i>
+                    <span>Order New Crates</span>
+                </a>
+            </li>
+        
+            <li
+                class="sidebar-item">
+                <a href="{% url 'list_order' %}" class='sidebar-link'>
+                    <i class="bi bi-border-width"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            
+            <li
+                class="sidebar-item">
+                <a href="{% url 'list_return' %}" class='sidebar-link'>
+                    <i class="bi bi-bootstrap-reboot"></i>
+                    <span>Returns</span>
+                </a>
+            </li>
+            
+            <li
+                class="sidebar-item">
+                <a href="{% url 'cart' %}" class='sidebar-link'>
+                    <i class="bi bi-basket-fill"></i>
+                    <span>Cart</span>
+                </a>
+            </li>
+        
+            {% elif request.user.is_staff %}
+
+                <li
+                    class="sidebar-item active ">
+                    <a href="{% url 'dasboard_packford' %}" class='sidebar-link'>
+                        <i class="bi bi-grid-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+
+                {% if request.user.is_manager %}
+                <li
+                    class="sidebar-item">
+                    <a href="{% url 'order_crate' %}" class='sidebar-link'>
+                        <i class="bi bi-plus-square-fill"></i>
+                        <span>Manage Crate Stock</span>
+                    </a>
+                </li>
+                <li
+                class="sidebar-item">
+                <a href="{% url 'change_item_location' %}" class='sidebar-link'>
+                    <i class="bi bi-folder-minus"></i>
+                    <span>Change Request</span>
+                </a>
+            </li>
+                {% endif %}
+
+                {% if not request.user.is_salesman %}
+
+                    <li
+                        class="sidebar-item">
+                        <a href="{% url 'all_order' %}" class='sidebar-link'>
+                            <i class="bi bi-border-width"></i>
+                            <span>Orders</span>
+                        </a>
+                    </li>
+                
+                    <li
+                        class="sidebar-item">
+                        <a href="{% url 'all_returns' %}" class='sidebar-link'>
+                            <i class="bi bi-bootstrap-reboot"></i>
+                            <span>Returns</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+                    {% if request.user.is_salesman %}
+
+                        <li
+                            class="sidebar-item">
+                            <a href="{% url 'add_company' %}" class='sidebar-link'>
+                                <i class="bi bi-building"></i>
+                                <span>Add Client</span>
+                            </a>
+                        </li>
+                    {% endif %}
+            {% endif %}
+            <li
+                class="sidebar-item  has-sub">
+                <a href="#" class='sidebar-link'>
+                    <i class="bi bi-person-badge-fill"></i>
+                    <span>Authentication</span>
+                </a>
+                <ul class="submenu ">
+                    <li class="submenu-item ">
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </li>
+            
+        </ul>
+    </div>
+    <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+    </div>

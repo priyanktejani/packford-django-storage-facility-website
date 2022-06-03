@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Dashboard
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <!-- main body -->
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>Dashboard</h3>
+                        <p class="text-subtitle text-muted">Manage Clients</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic card section start -->
+            <section id="content-types">
+                <div class="row">
+
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon purple">
+                                                    <i class="bi bi-border-width"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Total Clients</h6>
+                                                <h6 class="font-extrabold mb-0">{{ total_companies }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon blue">
+                                                    <i class="bi bi-bootstrap-reboot"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <h6 class="text-muted font-semibold">Total Branches</h6>
+                                                <h6 class="font-extrabold mb-0">{{ total_branch }}</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="stats-icon red">
+                                                    <i class="bi bi-box-arrow-left"></i>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <a href="{% url 'logout' %}">
+                                                    <h6 class="font-extrabold mb-0">LOGOUT</h6>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-body py-4 px-5">
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-xl">
+                                        <img src="{% static 'assets/images/faces/2.jpg' %}" alt="Face 1">
+                                    </div>
+                                    <div class="ms-3 name">
+                                        <h5 class="font-bold">{{ user.username }}</h5>
+                                        <h6 class="text-muted mb-0">{{ company }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+               
+                <h5 class="mb-4">Clients</h5>
+
+
+                <section class="section">
+                    <div class="card">
+                       
+                        <div class="card-body">
+                            <table class="table table-striped" id="table1">
+                                <thead>
+                                    <tr>
+                                        <th>Client Name</th>
+                                        <th>Postcode</th>
+                                        <th>City</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for company in companies %}
+                                        <tr>
+                                            <td> <a href="{% url 'company_detail' company.id %}">{{company.company_name}}</a></td>
+                                            <td>{{company.location.postcode}}</td>
+                                            <td>{{company.location.city}}</td>
+                                            <td>0{{company.location.phone}}</td>
+                                            <td>0{{company.location.address}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            
+                </section>
+                           
+
+            
+
+            </section>
+            <!-- Basic Card types section end -->
+           
+        </div>
+
+        
+        
+    </div>
+
+    
+    
+{% endblock %}

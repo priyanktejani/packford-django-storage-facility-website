@@ -1,0 +1,379 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Client - Dashboard
+{% endblock %}
+
+{% block body %}
+    <!-- sidebar -->
+    {% include 'layouts/sidebar.html' %}
+
+    <!-- main body -->
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
+
+        <div class="page-heading">
+            <div class="page-title">
+                <div class="row">
+                    <div class="col-12 col-md-6 order-md-1 order-last">
+                        <h3>{{company.company_name}}</h3>
+                        <p class="text-subtitle text-muted">Manage Clients Crates, Orders & payments</p>
+                    </div>
+                    <div class="col-12 col-md-6 order-md-2 order-first">
+                        <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                            
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Basic card section start -->
+            <section id="content-types">
+                <div class="row">
+                    <div class="col-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <a href="">
+                                    <div class="card">
+                                        <div class="card-body px-3 py-4-5">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="stats-icon purple">
+                                                        <i class="bi bi-border-width"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <h6 class="text-muted font-semibold">Total Orders</h6>
+                                                    <h6 class="font-extrabold mb-0">{{ total_orders }}</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                            </div>
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <a href="">
+                                    <div class="card">
+                                        <div class="card-body px-3 py-4-5">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="stats-icon blue">
+                                                        <i class="bi bi-bootstrap-reboot"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    
+                                                    <h6 class="text-muted font-semibold">Total Returns</h6>
+                                                    <h6 class="font-extrabold mb-0">{{ total_returns }}</h6>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-6 col-lg-4 col-md-6">
+                                <div class="card">
+                                    <div class="card-body px-3 py-4-5">
+                                        {% if not request.user.is_accounter %}
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="stats-icon green">
+                                                            <i class="bi bi-building"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h6 class="text-muted font-semibold">Total Branches</h6>
+                                                        <h6 class="font-extrabold mb-0">{{ total_branches }}</h6>
+                                                    </div>
+                                                </div>
+                                            {% else %}
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="stats-icon green">
+                                                            <i class="bi bi-credit-card-2-back-fill"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <h6 class="text-muted font-semibold">Orders Payment</h6>
+                                                        <h6 class="font-extrabold mb-0">${{ total_order_amount | floatformat:2 }}</h6>
+                                                    </div>
+                                                </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-3">
+                        <div class="card">
+                            <div class="card-body px-3 py-4-5">
+                                {% if not request.user.is_accounter %}
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon red">
+                                                <i class="bi bi-person-fill"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Total Employee</h6>
+                                            <h6 class="font-extrabold mb-0">{{ total_employees }}</h6>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="stats-icon red">
+                                                <i class="bi bi-credit-card-2-back-fill"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h6 class="text-muted font-semibold">Returns Payment</h6>
+                                            <h6 class="font-extrabold mb-0">${{ total_return_amount | floatformat:2 }}</h6>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% if request.user.is_manager or request.user.is_salesman %}
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Location</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Address: {{company.location.address}}</li>
+                            <li class="list-group-item">Postcode: {{company.location.postcode}}</li>
+                            <li class="list-group-item">City: {{company.location.city}}</li>
+                            <li class="list-group-item">Country: {{company.location.country}}</li>
+                            <li class="list-group-item">Phone: {{company.location.phone}}</li>
+                        </ul>
+                        </div>
+                </div>
+                {% endif %}      
+            </section>
+
+            
+            {% if not request.user.is_accounter %}
+            {% if not request.user.is_delivery_person %}
+                <!-- Basic Tables start -->
+                <section class="section">
+                    <div class="row" id="basic-table">
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between">
+                                    <h4 class="card-title">Company Branches</h4>
+                                        {% if request.user.is_salesman %}
+                                            <a href="{% url 'add_branch' company.id %}" class="btn btn-primary ">Add Branch</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                        <!-- Table with outer spacing -->
+                                        <div class="table-responsive">
+                                            <table class="table table-lg">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Branch name</th>
+                                                        <th>Post</th>
+                                                        <th>City</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for branch in branches %}
+                                                    <tr>
+                                                        <td class="text-bold-500"> <a href="{% url 'branch_detail' company.id branch.id %}">{{branch.branch_name}}</a></td>
+                                                        <td>{{branch.location.postcode}}</td>
+                                                        <td class="text-bold-500">{{branch.location.phone}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="card-title">Company Employees</h4>
+                                        {% if request.user.is_salesman %}
+                                        <a href="{% url 'add_company_employee' company.id %}" class="btn btn-primary ">Add Employee</a>
+                                        {% endif %}
+                                        </div>
+                                </div>
+                                <div class="card-content">
+                                        <!-- Table with outer spacing -->
+                                        <div class="table-responsive">
+                                            <table class="table table-lg">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for employee in employees %}
+                                                    <tr>
+                                                        {% if employee.first_name %}
+                                                            <td class="text-bold-500">{{ employee.first_name }} {{ employee.last_name }}</td>
+                                                        {% else %}
+                                                            <td class="text-bold-500">{{ employee.username }}</td>
+                                                        {% endif %}
+                                                        <td>{{employee.email}}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </section>
+                <!-- Basic Tables end -->
+            {% endif %}
+            {% endif %}
+
+
+            {% if request.user.is_manager %}
+            <!--  crate table start -->
+            <section class="section">
+                <div class="row" id="table-inverse">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">All Crates</h4>
+                            </div>
+                            <div class="card-content">
+                                <!-- table with dark -->
+                                <div class="table-responsive">
+                                    <table class="table table-light mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Crate_name</th>
+                                                <th>Category</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for crate in crates %}
+                                            <tr>
+                                                <td class="text-bold-500"> <a href="{{ crate.get_url }}">{{crate.crate_name}}</a></td>
+                                                <td>{{crate.category}}</td>
+                                                <td class="text-bold-500">{{crate.status}}</td>
+                                                
+                                                </td>
+                                            {% endfor %}
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- crate table end -->
+
+            {% endif %}
+
+            {% if request.user.is_accounter or request.user.is_manager or request.user.is_delivery_person %}
+            <!-- order return Tables start -->
+            <section class="section">
+                <div class="row" id="basic-table">
+                    <div class="col-12 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Orders</h4>
+                            </div>
+                            <div class="card-content">
+                                    <!-- Table with outer spacing -->
+                                    <div class="table-responsive">
+                                        <table class="table table-lg">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order no: #</th>
+                                                    <th>Order date</th>
+                                                    <th>Order total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for order in orders %}
+                                                <tr>
+                                                    <td class="text-bold-500">
+                                                        <a href="{% url 'order_details' order.order_number %}">
+                                                            <span class="badge bg-success"> {{order.order_number}}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>{{order.created_at}}</td>
+                                                    <td class="text-bold-500">{{order.order_total}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-12 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Returns</h4>
+                            </div>
+                            <div class="card-content">
+                                    <!-- Table with outer spacing -->
+                                    <div class="table-responsive">
+                                        <table class="table table-lg">
+                                            <thead>
+                                                <tr>
+                                                    <th>Return no: #</th>
+                                                    <th>Return date</th>
+                                                    <th>Return total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for return_order in return_orders %}
+                                                <tr>
+                                                    <td class="text-bold-500">
+                                                        <a href="{% url 'return_details' return_order.return_number %}">
+                                                        <span class="badge bg-danger">{{ return_order.return_number }}</span>
+                                                    </a>
+                                                </td>
+                                                    <td>{{return_order.created_at}}</td>
+                                                    <td>{{return_order.return_total}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </section>
+            <!-- order return Tables end -->
+            {% endif %}
+            </section>
+            <!-- Basic Card types section end -->
+           
+        </div>
+    </div>
+
+{% endblock %}
